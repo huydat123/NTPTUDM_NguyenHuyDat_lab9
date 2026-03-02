@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/_layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Product</title>
+    <style>
+
+        .form-container { background: #fff; padding: 30px; border-radius: 8px; }
+        .img-preview { border: 1px solid #ddd; border-radius: 4px; padding: 5px; background: #f9f9f9; }
+        .btn-update { background-color: #0d6efd; border: none; }
+        .btn-cancel { background-color: #6c757d; border: none; }
+    </style>
+</head>
+<body>
+<div layout:fragment="content" class="container-fluid py-4">
+    <div class="row justify-content-center">
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a th:href="@{/products}" class="text-decoration-none">Products</a></li>
+                    <li class="breadcrumb-item active">Edit Product</li>
+                </ol>
+            </nav>
+
+            <div class="form-container shadow-sm border">
+                <h2 class="fw-bold mb-4 border-bottom pb-3">Edit Product</h2>
+
+                <form th:action="@{/products/save}" th:object="${product}" method="post">
+                    <input type="hidden" th:field="*{id}">
+
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="mb-3">
+                                <label for="name" class="form-label fw-bold">Product Name</label>
+                                <input type="text" th:field="*{name}" id="name" class="form-control"
+                                       placeholder="Enter product name" required>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="price" class="form-label fw-bold">Price (₫)</label>
+                                    <input type="number" th:field="*{price}" id="price" class="form-control"
+                                           placeholder="0" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="category" class="form-label fw-bold">Category</label>
+                                    <select th:field="*{category.id}" class="form-select" id="category">
+                                        <option th:each="cat : ${categories}"
+                                                th:value="${cat.id}"
+                                                th:text="${cat.name}"
+                                                th:selected="${cat.id == product.category?.id}"></option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="image" class="form-label fw-bold">Image URL</label>
+                                <input type="text" th:field="*{image}" id="image" class="form-control"
+                                       placeholder="https://example.com/image.jpg">
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 text-center">
+                            <label class="form-label fw-bold d-block text-start ps-2">Current Image Preview</label>
+                            <div class="img-preview mt-1">
+                                <img th:src="${product.image != null && product.image != '' ? product.image : 'https://via.placeholder.com/250x200?text=No+Image'}"
+                                     id="preview" class="img-fluid" style="max-height: 250px; object-fit: contain;" alt="Preview">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 pt-3 border-top d-flex justify-content-end">
+                        <a th:href="@{/products}" class="btn btn-cancel text-white px-4 me-2">Cancel</a>
+                        <button type="submit" class="btn btn-update text-white px-4 shadow-sm">Update Product</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script layout:fragment="script">
+    document.getElementById('image').addEventListener('input', function() {
+        document.getElementById('preview').src = this.value || 'https://via.placeholder.com/250x200?text=No+Image';
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{_layout}">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Add Product</title>
+</head>
+
+<body>
+<div layout:fragment="content">
+
+  <!-- ===== Header giống trang list ===== -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+
+    <div>
+      <h4 class="fw-bold mb-1">Add Product</h4>
+      <nav style="--bs-breadcrumb-divider: '›';">
+        <ol class="breadcrumb mb-0">
+          <li class="breadcrumb-item">
+            <a th:href="@{/products}">Home</a>
+          </li>
+          <li class="breadcrumb-item">
+            <a th:href="@{/products}">Products</a>
+          </li>
+          <li class="breadcrumb-item active">Add</li>
+        </ol>
+      </nav>
+    </div>
+
+    <a th:href="@{/products}"
+       class="btn btn-primary">
+      ← Back to List
+    </a>
+
+  </div>
+
+  <!-- ===== Card giống style list ===== -->
+  <div class="card shadow-sm">
+    <div class="card-body">
+
+      <form th:action="@{/products/save}"
+            th:object="${product}"
+            method="post">
+
+        <div class="row g-3">
+
+          <!-- Name -->
+          <div class="col-md-6">
+            <label class="form-label fw-semibold">
+              Product Name
+            </label>
+            <input type="text"
+                   th:field="*{name}"
+                   class="form-control"
+                   placeholder="Enter product name">
+          </div>
+
+          <!-- Price -->
+          <div class="col-md-6">
+            <label class="form-label fw-semibold">
+              Price
+            </label>
+            <input type="number"
+                   th:field="*{price}"
+                   class="form-control"
+                   placeholder="Enter price">
+          </div>
+
+          <!-- Image -->
+          <div class="col-md-6">
+            <label class="form-label fw-semibold">
+              Image URL
+            </label>
+            <input type="text"
+                   th:field="*{image}"
+                   class="form-control"
+                   placeholder="http://image.jpg">
+          </div>
+
+          <!-- Category -->
+          <div class="col-md-6">
+            <label class="form-label fw-semibold">
+              Category
+            </label>
+            <select th:field="*{category}"
+                    class="form-select">
+              <option value="">-- Select Category --</option>
+              <option th:each="category : ${categories}"
+                      th:value="${category.id}"
+                      th:text="${category.name}">
+              </option>
+            </select>
+          </div>
+
+        </div>
+
+        <!-- Buttons -->
+        <div class="mt-4 text-end">
+          <button type="submit"
+                  class="btn btn-success px-4">
+            Add Product
+          </button>
+
+          <a th:href="@{/products}"
+             class="btn btn-outline-secondary">
+            Cancel
+          </a>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
